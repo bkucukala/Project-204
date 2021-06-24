@@ -232,9 +232,9 @@ Resources:
 
   Manager2:
     Type: AWS::EC2::Instance
-    Properties:
-      DependsOn:
+    DependsOn:
       - GrandMaster
+    Properties:
       LaunchTemplate:
         LaunchTemplateId: !Ref DockerSwarmManagerLT
         Version: !GetAtt DockerSwarmManagerLT.LatestVersionNumber
@@ -245,9 +245,9 @@ Resources:
 
   Worker1:
     Type: AWS::EC2::Instance
-    Properties:
-      DependsOn:
+    DependsOn:
       - GrandMaster
+    Properties:
       LaunchTemplate:
         LaunchTemplateId: !Ref DockerSwarmWorkerLT
         Version: !GetAtt DockerSwarmWorkerLT.LatestVersionNumber
