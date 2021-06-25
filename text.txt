@@ -1,0 +1,20 @@
+aws ecr create-repository \
+              --repository-name clarusway-repo/phonebook-app\
+              --image-scanning-configuration scanOnPush=false \
+              --image-tag-mutability MUTABLE \
+              --region us-east-1
+
+
+sudo docker build --force-rm -t "503770179516.dkr.ecr.us-east-1.amazonaws.com/clarusway-repo/phonebook-app:latest" https://github.com/bkucukala/Project-204/main/
+
+ docker push "503770179516.dkr.ecr.us-east-1.amazonaws.com/clarusway-repo/phonebook-app:latest"
+
+sudo cat << EOF | tee .env
+          ECR_REGISTRY=503770179516.dkr.ecr.us-east-1.amazonaws.com
+          APP_REPO_NAME=clarusway-repo/phonebook-app
+          EOF
+
+sudo cat << EOF | sudo tee .env
+ECR_REGISTRY=503770179516.dkr.ecr.us-east-1.amazonaws.com
+APP_REPO_NAME=clarusway-repo/phonebook-app
+EOF
