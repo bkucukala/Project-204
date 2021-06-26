@@ -1,29 +1,42 @@
 version: "3.7"
 
 services:
-    database:
-        image: mysql:5.7
-        configs:
-         -  source: db-config
-            target: /docker-entrypoint-initdb.d/init.sql
-        environment:
-            MYSQL_ROOT_PASSWORD: R1234r
-            MYSQL_DATABASE: phonebook_db
-            MYSQL_USER: admin
-            MYSQL_PASSWORD: Clarusway_1
-        volumes:
-            - dbdata:/var/lib/mysql
-    myapp:
-        image: :503770179516.dkr.ecr.us-east-1.amazonaws.com/clarusway-repo/phonebook-app:latest
-        restart: always
-        deploy: 
-            mode: global
-        depends_on:
-            - database
-        ports:
-            - "80:80"
-configs:
-    db-config:
-        file: ./init.sql
+  database:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: P123456p
+      MYSQL_DATABASE: phonebook_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Clarusway_1
+    volumes:
+      - db-data:/var/lib/mysql
+    configs:
+      - source: myinit
+        target: /docker-entrypoint-initdb.d/init.sql
+    networks:
+      - clarusnet
+
+  app-server:
+    env_file: .env
+    image: "${ECR_REGISTRY}/${APP_REPO_NAME}:latest"
+    deploy:
+      mode: global
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: start-first
+    ports:
+      - "80:80"
+    networks:
+      - clarusnet
+
+networks:
+  clarusnet:
+    driver: overlay
+
 volumes:
-    dbdata:
+  db-data:
+
+configs:
+  myinit:
+    file: ./init.sql

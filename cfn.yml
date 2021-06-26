@@ -137,8 +137,8 @@ Resources:
           EOF
           
           curl -o "docker-compose.yml" -L https://raw.githubusercontent.com/bkucukala/Project-204/main/docker-compose.yml
-          curl -o "init-db.py" -L https://raw.githubusercontent.com/bkucukala/Project-204/main/init-phonebook-db.py
-          docker-compose config | docker stack deploy --with-registry-auth -c - phonebook && docker run --network phonebook_clarusnet -v /home/ec2-user/phonebook:/app python:alpine sh -c 'pip install mysql-connector-python &&  python /app/init-db.py'
+          curl -o "phonebook-db.py" -L https://raw.githubusercontent.com/bkucukala/Project-204/main/phonebook-db.py
+          docker-compose config | docker stack deploy --with-registry-auth -c - phonebook && docker run --network phonebook_clarusnet -v /home/ec2-user/phonebook:/app python:alpine sh -c 'pip install mysql-connector-python &&  python /app/phonebook-db.py'
           - ECR_REGISTRY: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com
             APP_REPO_NAME: clarusway-repo/phonebook-app
             GITHUB_REPO: https://github.com/bkucukala/Project-204.git
